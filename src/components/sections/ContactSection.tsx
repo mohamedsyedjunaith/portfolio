@@ -74,22 +74,29 @@ const ContactSection = () => {
       setInputValue('');
       typeWriter('Message recorded.', () => setStep('confirm'));
     } else if (step === 'confirm' && inputValue.trim()) {
-      const answer = inputValue.trim().toLowerCase();
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
-      setInputValue('');
+  const answer = inputValue.trim().toLowerCase();
+  setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
+  setInputValue('');
 
-      if (answer === 'yes' || answer === 'y') {
-        typeWriter('Sending packet...', () => {
-    fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, message }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+  if (answer === 'yes' || answer === 'y') {
+    typeWriter('Sending packet...', async () => {
+      try {
+        const res = await fetch(
+          'https://portfolio-self-tau-39.vercel.app/api/send-message',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, message }),
+          }
+        );
+
+        const data = await res.json();
+
         if (data.success) {
           typeWriter(
-            `Message sent successfully!\nResponse: ${data.message}`,
+            `Message sent successfully ✓\n${data.message}`,
             () => {
               setStep('email');
               setEmail('');
@@ -97,26 +104,34 @@ const ContactSection = () => {
             }
           );
         } else {
-          throw new Error(data.message);
+          typeWriter(
+            `Failed to send message ✗\n${data.message}`,
+            () => {
+              setStep('email');
+              setEmail('');
+              setMessage('');
+            }
+          );
         }
-      })
-      .catch((err) => {
-        typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
-          setStep('email');
-          setEmail('');
-          setMessage('');
-        });
-      });
-
-        });
-      } else {
-        typeWriter('Message discarded ✗', () => {
-          setStep('email');
-          setEmail('');
-          setMessage('');
-        });
+      } catch (err) {
+        typeWriter(
+          'Failed to send message ✗\nNetwork / Server issue',
+          () => {
+            setStep('email');
+            setEmail('');
+            setMessage('');
+          }
+        );
       }
-    }
+    });
+  } else {
+    typeWriter('Message discarded ✗', () => {
+      setStep('email');
+      setEmail('');
+      setMessage('');
+    });
+  }
+}
   };
 
   const getPrompt = () => {

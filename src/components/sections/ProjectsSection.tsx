@@ -11,7 +11,7 @@ const projects = [
     features: ['Real-time Updates', 'WiFi Sync', 'Staff Allocation', 'ESP32 LCD Display', 'Node.js Backend'],
     icon: Wifi,
     color: 'cyan',
-    link: 'https://mohamedsyedjunaith.github.io/syed/',
+    link: 'https://mohamedsyedjunaith.github.io/School_Bell/',
   },
   {
     id: 2,

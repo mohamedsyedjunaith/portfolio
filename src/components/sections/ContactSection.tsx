@@ -59,48 +59,50 @@ const ContactSection = () => {
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter' || isTyping) return;
 
-    const inputTrim = inputValue.trim();
-    if (!inputTrim) return;
-
-    if (step === 'email') {
-      setEmail(inputTrim);
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
+    if (step === 'email' && inputValue.trim()) {
+      const emailInput = inputValue.trim();
+      setEmail(emailInput);
+      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: emailInput }]);
       setInputValue('');
       typeWriter('Email recorded.', () => setStep('message'));
-    } else if (step === 'message') {
-      setMessage(inputTrim);
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
+    } else if (step === 'message' && inputValue.trim()) {
+      const msgInput = inputValue.trim();
+      setMessage(msgInput);
+      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: msgInput }]);
       setInputValue('');
       typeWriter('Message recorded.', () => setStep('confirm'));
-    }else if (step === 'confirm') {
-  const answer = inputValue.trim().toLowerCase();
-  setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
-  setInputValue('');
+    } else if (step === 'confirm' && inputValue.trim()) {
+      const answer = inputValue.trim().toLowerCase();
+      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
+      setInputValue('');
 
-  if (answer === 'yes' || answer === 'y') {
-    typeWriter('Sending packet...', () => {
-      // 🔥 Fire-and-forget POST
-      fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, message }),
-      }).catch(() => {}); // ignore any network/CORS errors
+      if (answer === 'yes' || answer === 'y') {
+        typeWriter('Sending packet...', () => {
+          // Fire-and-forget POST, ignore any errors
+          fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, message }),
+          }).catch(() => {});
 
-      // ✅ Always show success regardless of errors
-      typeWriter('Message sent successfully!\nResponse: Email sent successfully', () => {
-        setStep('email');
-        setEmail('');
-        setMessage('');
-      });
-    });
-  } else {
-    typeWriter('Message discarded ✗', () => {
-      setStep('email');
-      setEmail('');
-      setMessage('');
-    });
-  }
-}
+          // Always show success message
+          typeWriter(
+            'Message sent successfully!\nResponse: Email sent successfully',
+            () => {
+              setStep('email');
+              setEmail('');
+              setMessage('');
+            }
+          );
+        });
+      } else {
+        typeWriter('Message discarded ✗', () => {
+          setStep('email');
+          setEmail('');
+          setMessage('');
+        });
+      }
+    }
   };
 
   const getPrompt = () => {
@@ -128,9 +130,7 @@ const ContactSection = () => {
               <div className="w-3 h-3 rounded-full bg-energy-green/80" />
             </div>
             <div className="flex-1 text-center">
-              <span className="text-xs text-muted-foreground">
-                contact_panel@grid:~
-              </span>
+              <span className="text-xs text-muted-foreground">contact_panel@grid:~</span>
             </div>
             <Terminal className="w-4 h-4 text-primary" />
           </div>
@@ -147,9 +147,7 @@ const ContactSection = () => {
                 {line.output && (
                   <p
                     className={`pl-6 mb-2 ${
-                      line.cmd === 'phone' || line.cmd === 'email'
-                        ? 'text-alice-blue'
-                        : 'text-foreground'
+                      line.cmd === 'phone' || line.cmd === 'email' ? 'text-alice-blue' : 'text-foreground'
                     }`}
                   >
                     {line.output}
@@ -159,9 +157,7 @@ const ContactSection = () => {
             ))}
 
             {displayedOutput && (
-              <p className="pl-6 text-foreground whitespace-pre-line">
-                {displayedOutput}
-              </p>
+              <p className="pl-6 text-foreground whitespace-pre-line">{displayedOutput}</p>
             )}
 
             {!isTyping && (
@@ -180,7 +176,6 @@ const ContactSection = () => {
                 />
               </div>
             )}
-
             <div ref={terminalEndRef} />
           </div>
         </div>
@@ -208,6 +203,35 @@ const ContactSection = () => {
             </div>
           </ScrollArea>
         </div>
+
+        {/* Footer Animation */}
+        <motion.div
+          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 50 }}
+        >
+          <h2 className="font-orbitron text-3xl lg:text-4xl font-bold text-foreground">
+            Mohamed Syed Junaith S B
+          </h2>
+          <p className="font-mono text-primary">ASPIRING SOFTWARE ENGINEER</p>
+
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
+            <div className="flex gap-2">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-primary"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' }}
+                />
+              ))}
+            </div>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

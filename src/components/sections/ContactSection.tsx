@@ -80,7 +80,7 @@ const ContactSection = () => {
 
       if (answer === 'yes' || answer === 'y') {
         typeWriter('Sending packet...', () => {
-          fetch('https://contact-one-mu.vercel.app/api/send-email', {
+          fetch('/api/send-message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, message }),

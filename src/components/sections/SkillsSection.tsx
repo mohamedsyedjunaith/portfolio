@@ -1,210 +1,202 @@
-import { motion } from 'framer-motion';
-import { Cpu, Code, Layout, Server, Database, Wrench } from 'lucide-react';
-import SectionTitle from '../SectionTitle';
+import { motion } from "framer-motion";
+import {
+  Cpu,
+  Code,
+  Layout,
+  Server,
+  Database,
+  Wrench,
+  Star,
+} from "lucide-react";
+import SectionTitle from "../SectionTitle";
 
+/* =========================
+   SKILL DATA
+========================= */
 const skillCategories = [
   {
     icon: Code,
-    title: 'Programming',
-    skills: ['C','C++', 'Java', 'JavaScript', 'Python'],
-    color: 'cyan',
+    title: "Programming",
+    color: "cyan",
+    skills: [
+      { name: "C", level: 4 },
+      { name: "C++", level: 4 },
+      { name: "Java", level: 3 },
+      { name: "JavaScript", level: 5 },
+      { name: "Python", level: 4 },
+    ],
   },
   {
     icon: Layout,
-    title: 'Frontend',
-    skills: ['HTML', 'CSS', 'React'],
-    color: 'purple',
+    title: "Frontend",
+    color: "purple",
+    skills: [
+      { name: "HTML", level: 5 },
+      { name: "CSS", level: 5 },
+      { name: "React", level: 4 },
+    ],
   },
   {
     icon: Server,
-    title: 'Backend',
-    skills: ['Node.js', 'Express.js', 'Spring Boot'],
-    color: 'green',
+    title: "Backend",
+    color: "green",
+    skills: [
+      { name: "Node.js", level: 4 },
+      { name: "Express.js", level: 4 },
+      { name: "Spring Boot", level: 3 },
+    ],
   },
   {
     icon: Database,
-    title: 'Databases',
-    skills: ['MongoDB', 'MySQL'],
-    color: 'blue',
+    title: "Databases",
+    color: "blue",
+    skills: [
+      { name: "MongoDB", level: 4 },
+      { name: "MySQL", level: 4 },
+    ],
   },
   {
     icon: Wrench,
-    title: 'Tools',
-    skills: ['GitHub', 'VS Code', 'Postman', 'IntelliJ IDEA', 'Vercel', 'Docker'],
-    color: 'cyan',
+    title: "Tools",
+    color: "cyan",
+    skills: [
+      { name: "GitHub", level: 5 },
+      { name: "VS Code", level: 5 },
+      { name: "Postman", level: 4 },
+      { name: "IntelliJ IDEA", level: 3 },
+      { name: "Vercel", level: 4 },
+      { name: "Docker", level: 3 },
+    ],
   },
 ];
 
-const colorStyles = {
+/* =========================
+   COLOR STYLES
+========================= */
+const colorStyles: any = {
   cyan: {
-    bg: 'bg-primary/10',
-    border: 'border-primary/30',
-    text: 'text-primary',
-    glow: 'shadow-[0_0_15px_hsl(var(--primary)/0.3)]',
-    bar: 'bg-primary',
+    bg: "bg-primary/10",
+    border: "border-primary/30",
+    text: "text-primary",
+    glow: "shadow-[0_0_25px_hsl(var(--primary)/0.45)]",
+    bar: "bg-primary",
   },
-    red: {
-    bg: 'bg-energy-red/10',
-    border: 'border-energy-red/30',
-    text: 'text-energy-red',
-    glow: 'shadow-[0_0_15px_hsl(var(--energy-red)/0.3)]',
-    bar: 'bg-energy-red',
-  },
-
   purple: {
-    bg: 'bg-accent/10',
-    border: 'border-accent/30',
-    text: 'text-accent',
-    glow: 'shadow-[0_0_15px_hsl(var(--accent)/0.3)]',
-    bar: 'bg-accent',
+    bg: "bg-accent/10",
+    border: "border-accent/30",
+    text: "text-accent",
+    glow: "shadow-[0_0_25px_hsl(var(--accent)/0.45)]",
+    bar: "bg-accent",
   },
   green: {
-    bg: 'bg-energy-green/10',
-    border: 'border-energy-green/30',
-    text: 'text-energy-green',
-    glow: 'shadow-[0_0_15px_hsl(var(--energy-green)/0.3)]',
-    bar: 'bg-energy-green',
+    bg: "bg-energy-green/10",
+    border: "border-energy-green/30",
+    text: "text-energy-green",
+    glow: "shadow-[0_0_25px_hsl(var(--energy-green)/0.45)]",
+    bar: "bg-energy-green",
   },
   blue: {
-    bg: 'bg-energy-blue/10',
-    border: 'border-energy-blue/30',
-    text: 'text-energy-blue',
-    glow: 'shadow-[0_0_15px_hsl(var(--energy-blue)/0.3)]',
-    bar: 'bg-energy-blue',
+    bg: "bg-energy-blue/10",
+    border: "border-energy-blue/30",
+    text: "text-energy-blue",
+    glow: "shadow-[0_0_25px_hsl(var(--energy-blue)/0.45)]",
+    bar: "bg-energy-blue",
   },
 };
 
+/* =========================
+   STAR RATING
+========================= */
+const SkillStars = ({ level }: { level: number }) => (
+  <div className="flex gap-0.5 justify-end">
+    {[1, 2, 3, 4, 5].map((i) => (
+      <motion.div
+        key={i}
+        whileHover={{ scale: 1.2 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <Star
+          className={`w-3.5 h-3.5 ${
+            i <= level
+              ? "fill-yellow-400 text-yellow-400 drop-shadow-[0_0_6px_rgba(250,204,21,0.8)]"
+              : "text-muted-foreground"
+          }`}
+        />
+      </motion.div>
+    ))}
+  </div>
+);
+
+/* =========================
+   MAIN COMPONENT
+========================= */
 const SkillsSection = () => {
   return (
     <section id="skills" className="min-h-screen py-20 px-4">
-      <SectionTitle 
-        icon={Cpu} 
-        title="SKILL TRANSFORMERS" 
-        subtitle="// Technical Capabilities" 
+      <SectionTitle
+        icon={Cpu}
+        title="SKILL TRANSFORMERS"
+        subtitle="// Technical Capabilities"
       />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {skillCategories.map((category, categoryIndex) => {
+        {skillCategories.map((category, index) => {
           const Icon = category.icon;
           const styles = colorStyles[category.color];
 
           return (
             <motion.div
               key={category.title}
-              className={`relative p-6 rounded-lg bg-card/80 backdrop-blur-sm border ${styles.border} transition-all duration-300 hover:${styles.glow}`}
+              className={`relative p-6 rounded-xl bg-card/80 backdrop-blur-sm border ${styles.border}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -8, scale: 1.02, boxShadow: styles.glow }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true }}
             >
               {/* Header */}
               <div className="flex items-center gap-3 mb-6">
-                <div className={`p-3 rounded-lg ${styles.bg} ${styles.border} border`}>
+                <motion.div
+                  whileHover={{ rotate: 8, scale: 1.1 }}
+                  className={`p-3 rounded-lg ${styles.bg} ${styles.border} border`}
+                >
                   <Icon className={`w-6 h-6 ${styles.text}`} />
-                </div>
-                <h3 className="font-orbitron text-lg font-semibold text-foreground">
+                </motion.div>
+                <h3 className="font-orbitron text-lg font-semibold">
                   {category.title}
                 </h3>
               </div>
 
               {/* Skills */}
               <div className="space-y-3">
-                {category.skills.map((skill, skillIndex) => {
-                  return (
+                {category.skills.map((skill) => (
+                  <div
+                    key={skill.name}
+                    className="grid grid-cols-[12px_1fr_auto] items-center gap-3"
+                  >
+                    {/* Dot */}
                     <motion.div
-                      key={skill}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + skillIndex * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      <div className="flex items-center gap-3">
+                      className={`w-2 h-2 rounded-full ${styles.bar}`}
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
 
-                        {/* Dot */}
-                        <motion.div
-                          className={`w-2 h-2 rounded-full ${styles.bar}`}
-                          animate={{ opacity: [0.5, 1, 0.5] }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            delay: skillIndex * 0.2,
-                          }}
-                        />
+                    {/* Skill Name */}
+                    <span className="font-mono text-sm truncate">
+                      {skill.name}
+                    </span>
 
-                        {/* Skill name */}
-                        <span className="font-mono text-sm text-foreground flex-1">
-                          {skill}
-                        </span>
-
-                        {/* Beam + Runner */}
-                        <div className="relative w-28 h-2 bg-muted rounded-full overflow-hidden">
-
-                          {/* Beam */}
-                          <motion.div
-                            className={`absolute top-0 h-full w-12 ${styles.bar} rounded-full`}
-                            initial={{ left: '-50px' }}
-                            animate={{ left: ['-50px', '130px'] }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: 'linear',
-                              delay: skillIndex * 0.2,
-                            }}
-                          />
-
-                          {/* Runner */}
-                          <motion.div
-                            className="absolute -top-2 flex gap-0.5"
-                            initial={{ left: '-50px' }}
-                            animate={{ left: ['-50px', '130px'] }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: 'linear',
-                              delay: skillIndex * 0.2,
-                            }}
-                          >
-                            <motion.div
-                              className={`w-1.5 h-1.5 rounded-full ${styles.bar}`}
-                              animate={{ y: [0, -3, 0] }}
-                              transition={{ duration: 0.4, repeat: Infinity }}
-                            />
-                            <motion.div
-                              className={`w-1.5 h-1.5 rounded-full ${styles.bar}`}
-                              animate={{ y: [-1, -4, -1] }}
-                              transition={{ duration: 0.4, repeat: Infinity, delay: 0.1 }}
-                            />
-                            <motion.div
-                              className={`w-1.5 h-1.5 rounded-full ${styles.bar}`}
-                              animate={{ y: [0, -3, 0] }}
-                              transition={{ duration: 0.4, repeat: Infinity, delay: 0.2 }}
-                            />
-                          </motion.div>
-
-                        </div>
-
-                      </div>
-                    </motion.div>
-                  );
-                })}
+                    {/* Stars */}
+                    <SkillStars level={skill.level} />
+                  </div>
+                ))}
               </div>
 
               {/* Footer */}
-              <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/50">
+              <div className="mt-6 pt-4 border-t border-border/50">
                 <span className="font-mono text-xs text-muted-foreground">
-                  TRANSFORMER {categoryIndex + 1}
+                  TRANSFORMER {index + 1}
                 </span>
-                <div className="flex items-center gap-1">
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className={`w-1.5 h-3 rounded-sm ${styles.bg}`}
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                    />
-                  ))}
-                </div>
               </div>
 
               {/* Corner Accent */}

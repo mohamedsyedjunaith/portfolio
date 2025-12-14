@@ -83,7 +83,7 @@ const ContactSection = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, message }),
-          }).catch(() => {});
+          });
 
           // Always show success message
           typeWriter(

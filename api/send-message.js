@@ -1,7 +1,27 @@
 // api/send-message.js
 import nodemailer from "nodemailer";
+import Cors from "cors";
+
+// Initialize CORS middleware
+const cors = Cors({
+  origin: "*", // allow all origins (GitHub Pages, localhost, etc.)
+  methods: ["POST"],
+});
+
+// Helper to run middleware in Next.js / Vercel function
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) reject(result);
+      else resolve(result);
+    });
+  });
+}
 
 export default async function handler(req, res) {
+  // Run CORS
+  await runMiddleware(req, res, cors);
+
   if (req.method !== "POST") {
     return res.status(405).json({ success: false, error: "Method not allowed" });
   }

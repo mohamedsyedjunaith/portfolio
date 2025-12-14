@@ -22,7 +22,6 @@ export default async function handler(req, res) {
   // Run CORS
   await runMiddleware(req, res, cors);
 
-  // Allow only POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ success: false, error: "Method not allowed" });
   }
@@ -33,19 +32,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, error: "Missing fields" });
   }
 
-  // Configure nodemailer with Gmail
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.EMAIL_USER, // your Gmail
-      pass: process.env.EMAIL_PASS, // Gmail App Password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
   try {
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER, // your email to receive messages
+      to: process.env.EMAIL_USER,
       replyTo: email,
       subject: "New Portfolio Contact Message",
       text: message,

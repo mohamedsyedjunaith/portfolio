@@ -22,7 +22,7 @@ const colorStyles = {
   green: 'border-energy-green/30 hover:border-energy-green hover:bg-energy-green/10 text-energy-green',
 };
 
-// Vercel backend URL
+// Full Vercel backend URL
 const BACKEND_URL = 'https://portfolio-self-tau-39.vercel.app/api/send-message';
 
 const ContactSection = () => {
@@ -89,7 +89,6 @@ const ContactSection = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, message }),
             });
-
             let data;
             try {
               data = await res.json();
@@ -202,9 +201,7 @@ const ContactSection = () => {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-3 px-6 py-3 rounded-lg border transition-all duration-300 ${
-                      colorStyles[link.color as keyof typeof colorStyles]
-                    }`}
+                    className={`flex items-center gap-3 px-6 py-3 rounded-lg border transition-all duration-300 ${colorStyles[link.color as keyof typeof colorStyles]}`}
                   >
                     <Icon className="w-5 h-5" />
                     <span className="font-orbitron text-sm">{link.label}</span>

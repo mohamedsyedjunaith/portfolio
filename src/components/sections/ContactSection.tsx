@@ -96,7 +96,7 @@ const ContactSection = () => {
 
         if (data.success) {
           typeWriter(
-            `Message sent successfully ✓\n${data.message}`,
+            `Message sent successfully ✓\n`,
             () => {
               setStep('email');
               setEmail('');
@@ -105,7 +105,7 @@ const ContactSection = () => {
           );
         } else {
           typeWriter(
-            `Message sent successfully ✓\n${data.message}`,
+            `Message sent successfully ✓\n`,
             () => {
               setStep('email');
               setEmail('');

@@ -20,6 +20,8 @@ const colorStyles = {
   green: 'border-energy-green/30 hover:border-energy-green hover:bg-energy-green/10 text-energy-green',
 };
 
+const BACKEND_URL = 'https://portfolio-self-tau-39.vercel.app/api/send-message'; // Vercel backend URL
+
 const ContactSection = () => {
   const [terminalLines, setTerminalLines] = useState<TerminalLine[]>([
     { prefix: '~', cmd: 'whoami', output: 'Mohamed Syed Junaith S B' },
@@ -36,8 +38,6 @@ const ContactSection = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalEndRef = useRef<HTMLDivElement>(null);
-
-
 
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -80,24 +80,21 @@ const ContactSection = () => {
 
       if (answer === 'yes' || answer === 'y') {
         typeWriter('Sending packet...', () => {
-          fetch('/api/send-message', {
+          fetch(BACKEND_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, message }),
           })
             .then((res) => res.json())
             .then((data) => {
-              if (data.status === 'Email sent successfully!') {
-                typeWriter(
-                  `Message sent successfully!\nResponse: ${data.status}`,
-                  () => {
-                    setStep('email');
-                    setEmail('');
-                    setMessage('');
-                  }
-                );
+              if (data.success) {
+                typeWriter(`Message sent successfully!\nResponse: ${data.message}`, () => {
+                  setStep('email');
+                  setEmail('');
+                  setMessage('');
+                });
               } else {
-                throw new Error(data.status);
+                throw new Error(data.message || 'Unknown error');
               }
             })
             .catch((err) => {
@@ -223,45 +220,44 @@ const ContactSection = () => {
           </ScrollArea>
         </div>
 
-       {/* Animated Name & Footer Grid */}
-<motion.div
-  className="mt-16 text-center"
-  initial={{ opacity: 0 }}
-  whileInView={{ opacity: 1 }}
-  viewport={{ once: true }}
-  transition={{ delay: 0.2, duration: 50 }}
->
-  <h2 className="font-orbitron text-3xl lg:text-4xl font-bold text-foreground">
-    Mohamed Syed Junaith S B
-  </h2>
-
-  <p className="font-mono text-primary">
-    ASPIRING SOFTWARE ENGINEER
-  </p>
-
-  <div className="flex justify-center items-center gap-4 mt-8">
-    <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
-
-    <div className="flex gap-2">
-      {[...Array(5)].map((_, i) => (
+        {/* Animated Name & Footer Grid */}
         <motion.div
-          key={i}
-          className="w-2 h-2 rounded-full bg-primary"
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            delay: i * 0.2,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-    </div>
+          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 50 }}
+        >
+          <h2 className="font-orbitron text-3xl lg:text-4xl font-bold text-foreground">
+            Mohamed Syed Junaith S B
+          </h2>
 
-    <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
-  </div>
-</motion.div>
+          <p className="font-mono text-primary">
+            ASPIRING SOFTWARE ENGINEER
+          </p>
 
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
+
+            <div className="flex gap-2">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-primary"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                    ease: 'easeInOut',
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

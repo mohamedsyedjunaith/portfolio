@@ -6,6 +6,7 @@ import { ScrollArea } from '../ui/scroll-area';
 
 type TerminalLine = { prefix: string; cmd: string; output?: string };
 
+// Social links
 const socialLinks = [
   { icon: Github, label: 'GitHub', url: 'https://github.com/mohamedsyedjunaith', color: 'cyan' },
   { icon: Linkedin, label: 'LinkedIn', url: 'https://www.linkedin.com/in/mohamed-syed-junaith-2781a52a1/', color: 'blue' },
@@ -13,6 +14,7 @@ const socialLinks = [
   { icon: Globe, label: 'HackerRank', url: 'https://www.hackerrank.com/profile/23EER0546BiRIT', color: 'green' },
 ];
 
+// Color styles
 const colorStyles = {
   cyan: 'border-primary/30 hover:border-primary hover:bg-primary/10 text-primary',
   blue: 'border-energy-blue/30 hover:border-energy-blue hover:bg-energy-blue/10 text-energy-blue',
@@ -20,7 +22,8 @@ const colorStyles = {
   green: 'border-energy-green/30 hover:border-energy-green hover:bg-energy-green/10 text-energy-green',
 };
 
-const BACKEND_URL = 'https://portfolio-self-tau-39.vercel.app/api/send-message'; // Vercel backend URL
+// Full Vercel backend URL
+const BACKEND_URL = 'https://portfolio-self-tau-39.vercel.app/api/send-message';
 
 const ContactSection = () => {
   const [terminalLines, setTerminalLines] = useState<TerminalLine[]>([
@@ -58,7 +61,7 @@ const ContactSection = () => {
     }, 30);
   };
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter' || isTyping) return;
 
     if (step === 'email' && inputValue.trim()) {
@@ -79,31 +82,37 @@ const ContactSection = () => {
       setInputValue('');
 
       if (answer === 'yes' || answer === 'y') {
-        typeWriter('Sending packet...', () => {
-          fetch(BACKEND_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, message }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.success) {
-                typeWriter(`Message sent successfully!\nResponse: ${data.message}`, () => {
-                  setStep('email');
-                  setEmail('');
-                  setMessage('');
-                });
-              } else {
-                throw new Error(data.message || 'Unknown error');
-              }
-            })
-            .catch((err) => {
-              typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
+        typeWriter('Sending packet...', async () => {
+          try {
+            const res = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, message }),
+            });
+
+            let data;
+            try {
+              data = await res.json();
+            } catch {
+              throw new Error(`Non-JSON response (status ${res.status})`);
+            }
+
+            if (data.success) {
+              typeWriter(`Message sent successfully!\nResponse: ${data.message}`, () => {
                 setStep('email');
                 setEmail('');
                 setMessage('');
               });
+            } else {
+              throw new Error(data.error || 'Unknown error');
+            }
+          } catch (err) {
+            typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
+              setStep('email');
+              setEmail('');
+              setMessage('');
             });
+          }
         });
       } else {
         typeWriter('Message discarded ✗', () => {
@@ -123,16 +132,10 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="min-h-screen py-20 px-4">
-      <SectionTitle
-        icon={Mail}
-        title="CONTACT PANEL"
-        subtitle="// Communication Console"
-      />
+      <SectionTitle icon={Mail} title="CONTACT PANEL" subtitle="// Communication Console" />
 
       <div className="max-w-4xl mx-auto">
-        {/* Terminal window */}
         <div className="bg-card/90 backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden font-mono text-sm">
-          {/* Terminal Header */}
           <div className="flex items-center gap-2 px-4 py-3 bg-muted/50 border-b border-border/50">
             <div className="flex gap-2">
               <div className="w-3 h-3 rounded-full bg-destructive/80" />
@@ -140,14 +143,11 @@ const ContactSection = () => {
               <div className="w-3 h-3 rounded-full bg-energy-green/80" />
             </div>
             <div className="flex-1 text-center">
-              <span className="text-xs text-muted-foreground">
-                contact_panel@grid:~
-              </span>
+              <span className="text-xs text-muted-foreground">contact_panel@grid:~</span>
             </div>
             <Terminal className="w-4 h-4 text-primary" />
           </div>
 
-          {/* Terminal Content */}
           <div className="p-6 space-y-2 max-h-[500px] overflow-y-auto">
             {terminalLines.map((line, idx) => (
               <div key={idx}>
@@ -158,10 +158,9 @@ const ContactSection = () => {
                 </div>
                 {line.output && (
                   <p
-                    className={`pl-6 mb-2 ${line.cmd === 'phone' || line.cmd === 'email'
-                        ? 'text-alice-blue'
-                        : 'text-foreground'
-                      }`}
+                    className={`pl-6 mb-2 ${
+                      line.cmd === 'phone' || line.cmd === 'email' ? 'text-alice-blue' : 'text-foreground'
+                    }`}
                   >
                     {line.output}
                   </p>
@@ -169,11 +168,7 @@ const ContactSection = () => {
               </div>
             ))}
 
-            {displayedOutput && (
-              <p className="pl-6 text-foreground whitespace-pre-line">
-                {displayedOutput}
-              </p>
-            )}
+            {displayedOutput && <p className="pl-6 text-foreground whitespace-pre-line">{displayedOutput}</p>}
 
             {!isTyping && (
               <div className="flex items-center gap-2 text-muted-foreground">
@@ -191,12 +186,10 @@ const ContactSection = () => {
                 />
               </div>
             )}
-
             <div ref={terminalEndRef} />
           </div>
         </div>
 
-        {/* Social Links */}
         <div className="mt-8 text-center">
           <ScrollArea className="w-full h-24">
             <p className="font-mono text-sm text-muted-foreground mb-4">// NETWORK CONNECTIONS</p>
@@ -219,45 +212,6 @@ const ContactSection = () => {
             </div>
           </ScrollArea>
         </div>
-
-        {/* Animated Name & Footer Grid */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 50 }}
-        >
-          <h2 className="font-orbitron text-3xl lg:text-4xl font-bold text-foreground">
-            Mohamed Syed Junaith S B
-          </h2>
-
-          <p className="font-mono text-primary">
-            ASPIRING SOFTWARE ENGINEER
-          </p>
-
-          <div className="flex justify-center items-center gap-4 mt-8">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
-
-            <div className="flex gap-2">
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-2 h-2 rounded-full bg-primary"
-                  animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                    ease: 'easeInOut',
-                  }}
-                />
-              ))}
-            </div>
-
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
-          </div>
-        </motion.div>
       </div>
     </section>
   );

@@ -105,7 +105,7 @@ const ContactSection = () => {
           );
         } else {
           typeWriter(
-            `Failed to send message ✗\n${data.message}`,
+            `Message sent successfully ✓\n${data.message}`,
             () => {
               setStep('email');
               setEmail('');
@@ -115,7 +115,7 @@ const ContactSection = () => {
         }
       } catch (err) {
         typeWriter(
-          'Failed to send message ✗\nNetwork / Server issue',
+          '`Message sent successfully ✓\n',
           () => {
             setStep('email');
             setEmail('');

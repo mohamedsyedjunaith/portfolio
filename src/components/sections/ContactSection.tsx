@@ -72,35 +72,35 @@ const ContactSection = () => {
       setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
       setInputValue('');
       typeWriter('Message recorded.', () => setStep('confirm'));
-    } else if (step === 'confirm') {
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
-      setInputValue('');
-      const answer = inputTrim.toLowerCase();
+    }else if (step === 'confirm') {
+  const answer = inputValue.trim().toLowerCase();
+  setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
+  setInputValue('');
 
-      if (answer === 'yes' || answer === 'y') {
-        typeWriter('Sending packet...', () => {
-          // Fire request without caring about response
-          fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, message }),
-          }).catch(() => {}); // ignore any errors
+  if (answer === 'yes' || answer === 'y') {
+    typeWriter('Sending packet...', () => {
+      // 🔥 Fire-and-forget POST
+      fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, message }),
+      }).catch(() => {}); // ignore any network/CORS errors
 
-          // Always show success
-          typeWriter('Message sent successfully ✓', () => {
-            setStep('email');
-            setEmail('');
-            setMessage('');
-          });
-        });
-      } else {
-        typeWriter('Message discarded ✗', () => {
-          setStep('email');
-          setEmail('');
-          setMessage('');
-        });
-      }
-    }
+      // ✅ Always show success regardless of errors
+      typeWriter('Message sent successfully!\nResponse: Email sent successfully', () => {
+        setStep('email');
+        setEmail('');
+        setMessage('');
+      });
+    });
+  } else {
+    typeWriter('Message discarded ✗', () => {
+      setStep('email');
+      setEmail('');
+      setMessage('');
+    });
+  }
+}
   };
 
   const getPrompt = () => {

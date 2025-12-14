@@ -37,8 +37,6 @@ const ContactSection = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
-
-
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [terminalLines, displayedOutput]);
@@ -61,51 +59,48 @@ const ContactSection = () => {
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter' || isTyping) return;
 
-    if (step === 'email' && inputValue.trim()) {
-      const emailInput = inputValue.trim();
-      setEmail(emailInput);
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: emailInput }]);
+    const inputTrim = inputValue.trim();
+    if (!inputTrim) return;
+
+    if (step === 'email') {
+      setEmail(inputTrim);
+      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
       setInputValue('');
       typeWriter('Email recorded.', () => setStep('message'));
-    } else if (step === 'message' && inputValue.trim()) {
-      const msgInput = inputValue.trim();
-      setMessage(msgInput);
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: msgInput }]);
+    } else if (step === 'message') {
+      setMessage(inputTrim);
+      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
       setInputValue('');
       typeWriter('Message recorded.', () => setStep('confirm'));
-   } else if (step === 'confirm' && inputValue.trim()) {
-  const answer = inputValue.trim().toLowerCase();
+    } else if (step === 'confirm') {
+      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputTrim }]);
+      setInputValue('');
+      const answer = inputTrim.toLowerCase();
 
-  setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
-  setInputValue('');
+      if (answer === 'yes' || answer === 'y') {
+        typeWriter('Sending packet...', () => {
+          // Fire request without caring about response
+          fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, message }),
+          }).catch(() => {}); // ignore any errors
 
-  if (answer === 'yes' || answer === 'y') {
-    typeWriter('Sending packet...', () => {
-
-      // 🔥 Fire-and-forget POST
-      fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, message }),
-      });
-
-      // ✅ ALWAYS show success
-      typeWriter('Message sent successfully ✓', () => {
-        setStep('email');
-        setEmail('');
-        setMessage('');
-      });
-    });
-  } else {
-    typeWriter('Message discarded ✗', () => {
-      setStep('email');
-      setEmail('');
-      setMessage('');
-    });
-  }
-}
-
+          // Always show success
+          typeWriter('Message sent successfully ✓', () => {
+            setStep('email');
+            setEmail('');
+            setMessage('');
+          });
+        });
+      } else {
+        typeWriter('Message discarded ✗', () => {
+          setStep('email');
+          setEmail('');
+          setMessage('');
+        });
+      }
+    }
   };
 
   const getPrompt = () => {
@@ -151,10 +146,11 @@ const ContactSection = () => {
                 </div>
                 {line.output && (
                   <p
-                    className={`pl-6 mb-2 ${line.cmd === 'phone' || line.cmd === 'email'
+                    className={`pl-6 mb-2 ${
+                      line.cmd === 'phone' || line.cmd === 'email'
                         ? 'text-alice-blue'
                         : 'text-foreground'
-                      }`}
+                    }`}
                   >
                     {line.output}
                   </p>
@@ -212,46 +208,6 @@ const ContactSection = () => {
             </div>
           </ScrollArea>
         </div>
-
-       {/* Animated Name & Footer Grid */}
-<motion.div
-  className="mt-16 text-center"
-  initial={{ opacity: 0 }}
-  whileInView={{ opacity: 1 }}
-  viewport={{ once: true }}
-  transition={{ delay: 0.2, duration: 50 }}
->
-  <h2 className="font-orbitron text-3xl lg:text-4xl font-bold text-foreground">
-    Mohamed Syed Junaith S B
-  </h2>
-
-  <p className="font-mono text-primary">
-    ASPIRING SOFTWARE ENGINEER
-  </p>
-
-  <div className="flex justify-center items-center gap-4 mt-8">
-    <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
-
-    <div className="flex gap-2">
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="w-2 h-2 rounded-full bg-primary"
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            delay: i * 0.2,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-    </div>
-
-    <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
-  </div>
-</motion.div>
-
       </div>
     </section>
   );

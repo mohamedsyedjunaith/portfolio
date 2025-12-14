@@ -80,33 +80,33 @@ const ContactSection = () => {
 
       if (answer === 'yes' || answer === 'y') {
         typeWriter('Sending packet...', () => {
-        fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, message }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              typeWriter(
-                `Message sent successfully!\nResponse: ${data.message}`,
-                () => {
-                  setStep('email');
-                  setEmail('');
-                  setMessage('');
-                }
-              );
-            } else {
-              throw new Error(data.message);
-            }
-          })
-          .catch((err) => {
-            typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
+    fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, message }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          typeWriter(
+            `Message sent successfully!\nResponse: ${data.message}`,
+            () => {
               setStep('email');
               setEmail('');
               setMessage('');
-            });
-          });
+            }
+          );
+        } else {
+          throw new Error(data.message);
+        }
+      })
+      .catch((err) => {
+        typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
+          setStep('email');
+          setEmail('');
+          setMessage('');
+        });
+      });
 
         });
       } else {

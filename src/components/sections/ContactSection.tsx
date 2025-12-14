@@ -89,7 +89,6 @@ const ContactSection = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, message }),
             });
-
             let data;
             try {
               data = await res.json();

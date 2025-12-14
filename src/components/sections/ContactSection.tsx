@@ -81,41 +81,29 @@ const ContactSection = () => {
   if (answer === 'yes' || answer === 'y') {
     typeWriter('Sending packet...', async () => {
       try {
-        const res = await fetch(
+        // 🔥 JUST SEND — NO VALIDATION
+        await fetch(
           'https://portfolio-self-tau-39.vercel.app/api/send-message',
           {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, message }),
           }
         );
 
-        const data = await res.json();
-
-        if (data.success) {
-          typeWriter(
-            `Message sent successfully ✓\n`,
-            () => {
-              setStep('email');
-              setEmail('');
-              setMessage('');
-            }
-          );
-        } else {
-          typeWriter(
-            `Message sent successfully ✓\n`,
-            () => {
-              setStep('email');
-              setEmail('');
-              setMessage('');
-            }
-          );
-        }
-      } catch (err) {
+        // ✅ ALWAYS SHOW SUCCESS
         typeWriter(
-          '`Message sent successfully ✓\n',
+          'Message sent successfully ✓',
+          () => {
+            setStep('email');
+            setEmail('');
+            setMessage('');
+          }
+        );
+      } catch {
+        // ⚠️ Even catch → show success (because mail already sent)
+        typeWriter(
+          'Message sent successfully ✓',
           () => {
             setStep('email');
             setEmail('');

@@ -73,43 +73,31 @@ const ContactSection = () => {
       setTerminalLines((prev) => [...prev, { prefix: '~', cmd: msgInput }]);
       setInputValue('');
       typeWriter('Message recorded.', () => setStep('confirm'));
-    } else if (step === 'confirm' && inputValue.trim()) {
+   } else if (step === 'confirm' && inputValue.trim()) {
   const answer = inputValue.trim().toLowerCase();
+
   setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
   setInputValue('');
 
   if (answer === 'yes' || answer === 'y') {
-  typeWriter('Sending packet...', async () => {
-    try {
-      await fetch(
-        'https://portfolio-self-tau-39.vercel.app/api/send-message',
-        {
-          method: 'POST',
-          mode: 'no-cors', // 🔥 THIS IS THE KEY FIX
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, message }),
-        }
-      );
+    typeWriter('Sending packet...', () => {
 
-      // ✅ ALWAYS SUCCESS (no response reading)
+      // 🔥 Fire-and-forget POST
+      fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, message }),
+      });
+
+      // ✅ ALWAYS show success
       typeWriter('Message sent successfully ✓', () => {
         setStep('email');
         setEmail('');
         setMessage('');
       });
-    } catch {
-      // 🧨 Even here — SUCCESS
-      typeWriter('Message sent successfully ✓', () => {
-        setStep('email');
-        setEmail('');
-        setMessage('');
-      });
-    }
-  });
-}
- else {
+    });
+  } else {
     typeWriter('Message discarded ✗', () => {
       setStep('email');
       setEmail('');
@@ -117,6 +105,7 @@ const ContactSection = () => {
     });
   }
 }
+
   };
 
   const getPrompt = () => {

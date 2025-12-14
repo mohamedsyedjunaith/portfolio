@@ -80,33 +80,34 @@ const ContactSection = () => {
 
       if (answer === 'yes' || answer === 'y') {
         typeWriter('Sending packet...', () => {
-          fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, message }),
+        fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, message }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              typeWriter(
+                `Message sent successfully!\nResponse: ${data.message}`,
+                () => {
+                  setStep('email');
+                  setEmail('');
+                  setMessage('');
+                }
+              );
+            } else {
+              throw new Error(data.message);
+            }
           })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.status === 'Email sent successfully!') {
-                typeWriter(
-                  `Message sent successfully!\nResponse: ${data.status}`,
-                  () => {
-                    setStep('email');
-                    setEmail('');
-                    setMessage('');
-                  }
-                );
-              } else {
-                throw new Error(data.status);
-              }
-            })
-            .catch((err) => {
-              typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
-                setStep('email');
-                setEmail('');
-                setMessage('');
-              });
+          .catch((err) => {
+            typeWriter(`Failed to send message ✗\nError: ${err}`, () => {
+              setStep('email');
+              setEmail('');
+              setMessage('');
             });
+          });
+
         });
       } else {
         typeWriter('Message discarded ✗', () => {

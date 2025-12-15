@@ -153,7 +153,7 @@ const AboutSection = () => {
             {/* Download Resume Button */}
             <div className="pt-6 flex justify-center">
               <motion.a
-                href="Syed Junaith's resume.pdf" // place your resume in the public folder
+                href="Syed_Junaith_resume.pdf" // place your resume in the public folder
                 download
                 className="px-6 py-3 rounded-lg bg-primary text-background font-bold border border-primary/50 glow-cyan hover:glow-cyan-intense transition-all"
                 initial={{ opacity: 0, y: 10 }}

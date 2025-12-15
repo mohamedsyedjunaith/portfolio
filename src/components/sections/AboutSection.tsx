@@ -154,7 +154,7 @@ const AboutSection = () => {
             <div className="pt-6 flex justify-center">
               <motion.a
                 href="Syed_Junaith_resume.pdf" // place your resume in the public folder
-                download
+                download="Syed_Junaith_resume.pdf"
                 className="px-6 py-3 rounded-lg bg-primary text-background font-bold border border-primary/50 glow-cyan hover:glow-cyan-intense transition-all"
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}

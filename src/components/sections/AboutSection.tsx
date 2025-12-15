@@ -162,7 +162,7 @@ const AboutSection = () => {
                 transition={{ delay: 1 }}
                 whileHover={{ scale: 1.05, boxShadow: '0 0 15px hsl(var(--primary)/0.6)' }}
               >
-                Download Resume
+                Download 
               </motion.a>
             </div>
           </div>

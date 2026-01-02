@@ -134,4 +134,4 @@ const EnergyBackground = () => {
   );
 };
 
-export default EnergyBackground;
+export default EnergyBackground;   

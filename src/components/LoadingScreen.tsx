@@ -10,12 +10,14 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const [statusText, setStatusText] = useState('Initializing...');
 
 const statusMessages = [
-  'Putting on a professional smile...',
+  'Initializing system modules...',
   'Organizing the invisible sections...',
-  'Brewing coffee for optimal efficiency...',
-  'Sharpening virtual pencils...',
+  'Optimizing performance layers...',
+  'Loading portfolio components...',
   'Polishing my professional skills...',
-  'All systems go. Get ready!...',
+  'Final checks in progress...',
+  'System ready. Welcome!',
+
 ];
 
 
@@ -48,7 +50,7 @@ const statusMessages = [
       <motion.div
         className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.75 }}
       >
         {/* Grid background */}
         <div className="absolute inset-0 grid-pattern opacity-30" />

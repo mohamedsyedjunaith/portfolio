@@ -41,7 +41,7 @@ const projects = [
     features: ["User & Admin Access","AI Assistance", "Expense & Income Management", "Secure Payment Integration", "Cloud Data Sync"],
     icon: Cpu,
     color: 'green',
-    link: '#',
+    link: 'https://finance-tracker-kappa-khaki.vercel.app/',
   },
   {
     id: 5,

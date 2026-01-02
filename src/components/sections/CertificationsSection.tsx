@@ -8,7 +8,7 @@ const certifications = [
     issuer: 'DigiDARA Technologies',
     type: 'Professional Certification',
     color: 'cyan',
-    Link: '#',
+    Link: 'https://drive.google.com/file/d/11YucM7sv4XxaPiy3wmM0zlzPtqe8ff_Z/view?usp=sharing',
   },
   {
     title: 'Type-Writing',
@@ -39,17 +39,10 @@ const certifications = [
     Link: 'https://drive.google.com/file/d/1ylA-5VcEGVxW_hyBHU8oCxxwKRy78x2e/view?usp=sharing',
   },
   {
-    title: 'Artificial Intelligence',
-    issuer: 'Oracle',
-    type: 'AI Foundation',
-    color: 'purple',
-    Link: 'https://drive.google.com/file/d/1PYPZ2OYNpswf2d8oa-9PU76C79fIjftm/view?usp=drive_link',
-  },
-  {
     title: 'Python',
     issuer: 'Infosys',
     type: 'Data Science Statistics',
-    color: 'green',
+    color: 'purple',
     Link: 'https://drive.google.com/file/d/1xBnep0DdG2adH1c-q9-yVHf3B1Oki3ja/view?usp=sharing',
   },
     {

@@ -58,6 +58,23 @@ const Index = () => {
 
   const handleSectionChange = (sectionId: string) => {
     setActiveSection(sectionId);
+
+    // Special handling for lazy-loaded contact section
+    if (sectionId === 'contact' && !showContact) {
+      setShowContact(true);
+      // Give React a moment to render the contact section
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element && mainRef.current) {
+          mainRef.current.scrollTo({
+            top: element.offsetTop - 50,
+            behavior: 'smooth',
+          });
+        }
+      }, 100);
+      return;
+    }
+
     const element = document.getElementById(sectionId);
     if (element && mainRef.current) {
       mainRef.current.scrollTo({
@@ -109,7 +126,7 @@ const Index = () => {
                       <motion.div
                         className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center"
                         animate={{ boxShadow: ['0 0 10px hsl(var(--primary) / 0.3)', '0 0 20px hsl(var(--primary) / 0.5)', '0 0 10px hsl(var(--primary) / 0.3)'] }}
-                        transition={{ duration: 2,easeInOut: 'easeInOut', repeat: Infinity }}
+                        transition={{ duration: 2, easeInOut: 'easeInOut', repeat: Infinity }}
                       >
                         <span className="font-orbitron text-lg font-bold text-primary">SJ</span>
                       </motion.div>
@@ -121,146 +138,146 @@ const Index = () => {
                       animate={{ opacity: 1, y: 10 }}
                       transition={{ duration: 1 }}
                     >
-                    <h1 className="font-orbitron text-xl font-bold text-foreground">
-                        SYED JUNAITH 
-                    </h1>
-                    <p className="font-mono text-xs text-muted-foreground">
-                      Portfolio v2.0
-                    </p>
+                      <h1 className="font-orbitron text-xl font-bold text-foreground">
+                        SYED JUNAITH
+                      </h1>
+                      <p className="font-mono text-xs text-muted-foreground">
+                        Portfolio 
+                      </p>
                     </motion.div>
 
-                                </div>
-              {/* Status indicators - Enhanced Sci-Fi Version */}
-              <div className="hidden md:flex items-center gap-6 relative">
-                {/* SYSTEM ONLINE */}
-                <div className="flex items-center gap-2 relative">
-                  {/* Pulsing Node */}
-                  <motion.div
-                    className="w-3 h-3 rounded-full bg-energy-green shadow-[0_0_15px_rgba(0,255,180,0.7)]"
-                    animate={{
-                      opacity: [0.4, 1, 0.4],
-                      scale: [0.9, 1.3, 0.9],
-                      boxShadow: [
-                        "0 0 5px rgba(0,255,180,0.5)",
-                        "0 0 20px rgba(0,255,180,0.9)",
-                        "0 0 5px rgba(0,255,180,0.5)"
-                      ]
-                    }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  <span className="font-mono text-xs text-muted-foreground tracking-wider">
-                    SYSTEM ONLINE
-                  </span>
-
-                  {/* Tiny floating sparks */}
-                  {[...Array(3)].map((_, i) => (
-                    <motion.span
-                      key={i}
-                      className="absolute w-1 h-1 bg-energy-green rounded-full"
-                      initial={{ opacity: 0, x: 0, y: 0, scale: 0 }}
-                      animate={{
-                        opacity: [0, 1, 0],
-                        x: [0, -5 + i * 5, 0],
-                        y: [0, -8 + i * 4, 0],
-                        scale: [0.5, 1, 0.5]
-                      }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                    />
-                  ))}
-                </div>
-
-                {/* NODES */}
-                <div className="flex items-center gap-2 relative">
-                  <span className="font-mono text-xs text-muted-foreground tracking-wider">NODES:</span>
-                  <span className="font-mono text-xs text-primary font-bold glow-text-strong">7/7</span>
-                  {/* Node spark glow */}
-                  <motion.div
-                    className="absolute -top-1 -right-2 w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(0,255,255,0.6)]"
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                </div>
-
-              {/* POWER Bars */}
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-muted-foreground tracking-wider">
-                  POWER:
-                </span>
-                <div className="flex gap-0.5 relative">
-                  {[...Array(5)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="w-1 h-3 bg-primary rounded-sm shadow-[0_0_6px_rgba(0,255,255,0.5)]"
-                      animate={{
-                        opacity: [0.3, 1, 0.3],
-                        scaleY: [1, 1.5, 1],
-                        y: [0, -2, 0]
-                      }}
-                      transition={{
-                        duration: 1.2 + i * 0.1,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        repeatType: "mirror"
-                      }}
-                    />
-                  ))}
-
-                  {/* Background pulse behind bars */}
-                  <motion.div
-                    className="absolute inset-0 bg-primary/20 rounded-sm blur-lg"
-                    animate={{ opacity: [0, 0.6, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                  />
-
-                  {/* Floating energy sparks */}
-                  {[...Array(4)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-1 h-1 bg-primary rounded-full"
-                      initial={{ opacity: 0, x: 0, y: 0, scale: 0 }}
-                      animate={{
-                        opacity: [0, 1, 0],
-                        x: [-5 + i * 3, 5 - i * 3, 0],
-                        y: [-6 + i * 3, 6 - i * 3, 0],
-                        scale: [0.5, 1.2, 0.5]
-                      }}
-                      transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
-                    />
-                  ))}
-
-
-                    {/* Background pulse behind bars */}
-                    <motion.div
-                      className="absolute inset-0 bg-primary/20 rounded-sm blur-lg"
-                      animate={{ opacity: [0, 0.6, 0] }}
-                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                    />
                   </div>
+                  {/* Status indicators - Enhanced Sci-Fi Version */}
+                  <div className="hidden md:flex items-center gap-6 relative">
+                    {/* SYSTEM ONLINE */}
+                    <div className="flex items-center gap-2 relative">
+                      {/* Pulsing Node */}
+                      <motion.div
+                        className="w-3 h-3 rounded-full bg-energy-green shadow-[0_0_15px_rgba(0,255,180,0.7)]"
+                        animate={{
+                          opacity: [0.4, 1, 0.4],
+                          scale: [0.9, 1.3, 0.9],
+                          boxShadow: [
+                            "0 0 5px rgba(0,255,180,0.5)",
+                            "0 0 20px rgba(0,255,180,0.9)",
+                            "0 0 5px rgba(0,255,180,0.5)"
+                          ]
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                      <span className="font-mono text-xs text-muted-foreground tracking-wider">
+                        SYSTEM ONLINE
+                      </span>
 
-                  {/* Floating sparks over bars */}
-                  {[...Array(4)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-1 h-1 bg-primary rounded-full"
-                      initial={{ opacity: 0, x: 0, y: 0, scale: 0 }}
-                      animate={{
-                        opacity: [0, 1, 0],
-                        x: [-5 + i * 3, 5 - i * 3, 0],
-                        y: [-6 + i * 3, 6 - i * 3, 0],
-                        scale: [0.5, 1.2, 0.5]
-                      }}
-                      transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
-                    />
-                  ))}
-                </div>
-              </div>
+                      {/* Tiny floating sparks */}
+                      {[...Array(3)].map((_, i) => (
+                        <motion.span
+                          key={i}
+                          className="absolute w-1 h-1 bg-energy-green rounded-full"
+                          initial={{ opacity: 0, x: 0, y: 0, scale: 0 }}
+                          animate={{
+                            opacity: [0, 1, 0],
+                            x: [0, -5 + i * 5, 0],
+                            y: [0, -8 + i * 4, 0],
+                            scale: [0.5, 1, 0.5]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* NODES */}
+                    <div className="flex items-center gap-2 relative">
+                      <span className="font-mono text-xs text-muted-foreground tracking-wider">NODES:</span>
+                      <span className="font-mono text-xs text-primary font-bold glow-text-strong">7/7</span>
+                      {/* Node spark glow */}
+                      <motion.div
+                        className="absolute -top-1 -right-2 w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(0,255,255,0.6)]"
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                    </div>
+
+                    {/* POWER Bars */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs text-muted-foreground tracking-wider">
+                        POWER:
+                      </span>
+                      <div className="flex gap-0.5 relative">
+                        {[...Array(5)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="w-1 h-3 bg-primary rounded-sm shadow-[0_0_6px_rgba(0,255,255,0.5)]"
+                            animate={{
+                              opacity: [0.3, 1, 0.3],
+                              scaleY: [1, 1.5, 1],
+                              y: [0, -2, 0]
+                            }}
+                            transition={{
+                              duration: 1.2 + i * 0.1,
+                              ease: "easeInOut",
+                              repeat: Infinity,
+                              repeatType: "mirror"
+                            }}
+                          />
+                        ))}
+
+                        {/* Background pulse behind bars */}
+                        <motion.div
+                          className="absolute inset-0 bg-primary/20 rounded-sm blur-lg"
+                          animate={{ opacity: [0, 0.6, 0] }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+
+                        {/* Floating energy sparks */}
+                        {[...Array(4)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-primary rounded-full"
+                            initial={{ opacity: 0, x: 0, y: 0, scale: 0 }}
+                            animate={{
+                              opacity: [0, 1, 0],
+                              x: [-5 + i * 3, 5 - i * 3, 0],
+                              y: [-6 + i * 3, 6 - i * 3, 0],
+                              scale: [0.5, 1.2, 0.5]
+                            }}
+                            transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+                          />
+                        ))}
+
+
+                        {/* Background pulse behind bars */}
+                        <motion.div
+                          className="absolute inset-0 bg-primary/20 rounded-sm blur-lg"
+                          animate={{ opacity: [0, 0.6, 0] }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                      </div>
+
+                      {/* Floating sparks over bars */}
+                      {[...Array(4)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-1 h-1 bg-primary rounded-full"
+                          initial={{ opacity: 0, x: 0, y: 0, scale: 0 }}
+                          animate={{
+                            opacity: [0, 1, 0],
+                            x: [-5 + i * 3, 5 - i * 3, 0],
+                            y: [-6 + i * 3, 6 - i * 3, 0],
+                            scale: [0.5, 1.2, 0.5]
+                          }}
+                          transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+                        />
+                      ))}
+                    </div>
+                  </div>
 
 
                 </div>
               </motion.header>
 
               {/* Sections */}
-              <AboutSection />
+              <AboutSection onSectionChange={handleSectionChange} />
               <AchievementsSection />
               <EducationSection />
               <SkillsSection />
@@ -289,7 +306,7 @@ const Index = () => {
               {/* Footer */}
               <footer className="py-8 border-t border-border/30 text-center">
                 <p className="font-mono text-xs text-muted-foreground">
-                   Syed Junaith's Portfolio | DESIGNED BY MSJ
+                  Syed Junaith's Portfolio | DESIGNED BY MSJ 
                 </p>
                 <div className="flex justify-center items-center gap-2 mt-2">
                   <motion.div

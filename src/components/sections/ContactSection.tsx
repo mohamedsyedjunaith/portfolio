@@ -58,8 +58,14 @@ const ContactSection = () => {
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter' || isTyping) return;
+    const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     if (step === 'email' && inputValue.trim()) {
+    if (!isValidEmail(inputValue.trim())) {
+    typeWriter(' Invalid email format. Try again.');
+    setInputValue('');
+    return;
+    }
       const emailInput = inputValue.trim();
       setEmail(emailInput);
       setTerminalLines((prev) => [...prev, { prefix: '~', cmd: emailInput }]);
@@ -106,7 +112,7 @@ const ContactSection = () => {
   };
 
   const getPrompt = () => {
-    if (step === 'email') return 'Enter your email';
+    if (step === 'email') return 'Enter your email (You can type here...)';
     if (step === 'message') return 'Enter your message';
     if (step === 'confirm') return 'Send message? (Yes/No)';
   };
@@ -179,31 +185,45 @@ const ContactSection = () => {
             <div ref={terminalEndRef} />
           </div>
         </div>
-
         {/* Social Links */}
-        <div className="mt-8 text-center">
-          <ScrollArea className="w-full h-24">
-            <p className="font-mono text-sm text-muted-foreground mb-4">// NETWORK CONNECTIONS</p>
-            <div className="inline-flex justify-center gap-4 px-4 py-2 w-full">
-              {socialLinks.map((link) => {
-                const Icon = link.icon;
-                return (
-                  <a
-                    key={link.label}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center gap-3 px-6 py-3 rounded-lg border transition-all duration-300 ${colorStyles[link.color as keyof typeof colorStyles]}`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-orbitron text-sm">{link.label}</span>
-                  </a>
-                );
-              })}
-            </div>
-          </ScrollArea>
-        </div>
+        <motion.div
+          className="mt-8 text-center w-full overflow-x-hidden"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 50 }} // ⬅️ recommended
+        >
+          <p className="font-mono text-xs sm:text-sm text-muted-foreground mb-4">
+            // NETWORK CONNECTIONS
+          </p>
 
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:justify-center sm:gap-4 px-4">
+            {socialLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <a
+                  key={link.label}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`
+                    flex items-center justify-center gap-2
+                    px-4 py-3
+                    rounded-lg border
+                    transition-all duration-300
+                    text-xs sm:text-sm
+                    ${colorStyles[link.color as keyof typeof colorStyles]}
+                  `}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="hidden sm:inline font-orbitron">
+                    {link.label}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </motion.div>
         {/* Footer Animation */}
         <motion.div
           className="mt-16 text-center"

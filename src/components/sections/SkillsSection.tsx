@@ -21,9 +21,11 @@ const skillCategories = [
     skills: [
       { name: "C", level: 4 },
       { name: "C++", level: 4 },
-      { name: "Java", level: 3 },
+      { name: "Java", level: 5 },
       { name: "JavaScript", level: 5 },
       { name: "Python", level: 4 },
+      { name: "Dart" , level: 4}
+
     ],
   },
   {
@@ -34,6 +36,7 @@ const skillCategories = [
       { name: "HTML", level: 5 },
       { name: "CSS", level: 5 },
       { name: "React", level: 4 },
+      { name: "Flutter", level: 4 }, // ✅ added
     ],
   },
   {
@@ -69,6 +72,7 @@ const skillCategories = [
     ],
   },
 ];
+
 
 /* =========================
    COLOR STYLES

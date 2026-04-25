@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { color, motion } from 'framer-motion';
 import { Trophy, Award, Medal, Star } from 'lucide-react';
 import SectionTitle from '../SectionTitle';
 
@@ -8,6 +8,13 @@ const achievements = [
     title: 'Academic Excellence Award',
     subtitle: '2025–2026',
     description: 'Recognized for outstanding academic performance',
+    color: 'purple',
+  },
+  {
+    icon: Star,
+    title: 'Smart Hybrid Surge Detection and Backup Storge System for Power Plant',
+    subtitle: 'Hackathon | Kongu Engineering College',
+    description: 'First Prize',
     color: 'cyan',
   },
   {

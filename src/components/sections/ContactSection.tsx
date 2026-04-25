@@ -84,14 +84,11 @@ const ContactSection = () => {
 
       if (answer === 'yes' || answer === 'y') {
         typeWriter('Sending packet...', () => {
-          // Fire-and-forget POST, ignore any errors
           fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, message }),
           });
-
-          // Always show success message
           typeWriter(
             'Message sent successfully!\nResponse: Email sent successfully',
             () => {
@@ -110,13 +107,12 @@ const ContactSection = () => {
       }
     }
   };
-
   const getPrompt = () => {
     if (step === 'email') return 'Enter your email (You can type here...)';
     if (step === 'message') return 'Enter your message';
     if (step === 'confirm') return 'Send message? (Yes/No)';
   };
-
+  
   return (
     <section id="contact" className="min-h-screen py-20 px-4">
       <SectionTitle

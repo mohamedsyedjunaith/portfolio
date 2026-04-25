@@ -306,7 +306,7 @@ const Index = () => {
               {/* Footer */}
               <footer className="py-8 border-t border-border/30 text-center">
                 <p className="font-mono text-xs text-muted-foreground">
-                  Syed Junaith's Portfolio | DESIGNED BY MSJ 
+                  Syed Junaith's Portfolio | DESIGNED BY MSJ | Phone No.: 8838354784
                 </p>
                 <div className="flex justify-center items-center gap-2 mt-2">
                   <motion.div

@@ -5,7 +5,7 @@ import SectionTitle from '../SectionTitle';
 const certifications = [
   {
     title: 'Certified Full-Stack Java Developer',
-    issuer: 'DigiDARA Technologies',
+    issuer: 'Soft And Soft Computers',
     type: 'Professional Certification',
     color: 'cyan',
     Link: 'https://drive.google.com/file/d/11YucM7sv4XxaPiy3wmM0zlzPtqe8ff_Z/view?usp=sharing',

@@ -26,7 +26,7 @@ const projects = [
   {
     id: 3,
     title: 'DIGITAL TOURNAMENT PLATFORM',
-    subtitle: 'React + Node + MongoDB',
+    subtitle: 'React + Node.js + MongoDB',
     description: 'Full-stack tournament management platform with role-based access, participant handling, Razorpay payments, and hardware-based gateway.',
     features: ['Role-based Access', 'Participant Handling','Booking facility', 'Razorpay Payments', 'Hardware Gateway','Wifi Sync'],
     icon: Trophy,
@@ -45,14 +45,64 @@ const projects = [
   },
   {
     id: 5,
-    title: 'SMART TIMETABLE BELL SYSTEM (v2)',
-    subtitle: 'ESP32 + Node.js + MongoDB',
-    description: 'Advanced version with improved MIS, mobile app integration, dynamic timetable updates, substitute management, and real-time LCD sync.',
-    features: ['Improved MIS', 'Dynamic Updates', 'Mobile App Sync', 'LCD Display', 'Staff Auto Allocation'],
-    icon: Wifi,
+    title: 'AI Interview Bot',
+    subtitle: 'React + Gemini API + MongoDB',
+    description: 'AI-powered interview assistant that conducts mock interviews, evaluates candidate responses and provides real-time feedback with performance analytics.',
+    features: ['Mock Interviews', 'AI Feedback', 'Performance Analytics', 'Question Generation', 'Candidate Scoring'],
+    icon: Folder,
     color: 'cyan',
     link: '#',
   },
+  {
+    id: 6,
+    title: 'Smart Hybrid Surge Detection and Backup Storage System for Power Plant',
+    subtitle: 'HTML + CSS + Node.js + IoT',
+    description: 'Built a smart hybrid energy system with automatic switching and surge protection using fuzzy logic.',
+    features: [
+      'Surge detection',
+      'Auto source switching',
+      'Fuzzy logic control',
+      'Minimal battery usage',
+      'Real-time monitoring',
+      'IoT integration'
+    ],
+    icon: Wifi,
+    color: 'purple',
+    link: '#',
+  },
+  {
+    id: 7,
+    title: 'An Intelligent Fire Safety Protection System Using Computer Vision and IoT-Based Mobile Alerts',
+    subtitle: 'YOLOv8 Computer Vision',
+    description: 'Real-time fire and gas safety system with YOLOv8 detection, mobile alerts, and automated suppression.',
+    features: [
+      'YOLOv8 vision model',
+      'Gas leak detection',
+      'Auto water suppression',
+      'Telegram mobile alerts',
+      'Live image capture'
+    ],
+    icon: Eye,
+    color: 'blue',
+    link: '#',
+  },
+  {
+  id: 8,
+  title: 'Real-Time Collaborative Scheduling Platform',
+  subtitle: 'Full Stack + AI Scheduling Assistant',
+  description: 'A scalable full-stack web application for team-based scheduling with real-time collaboration, secure authentication, and intelligent planning.',
+  features: [
+    'JWT Authentication & Role-Based Access',
+    'Real-Time Updates using WebSockets',
+    'Room-Based Collaboration System',
+    'Email Invitation Workflow',
+    'AI Scheduling Assistant (Custom LLM)',
+  ],
+  icon: Trophy,
+  color: 'blue',
+  link: '#',
+}
+
 ];
 
 const colorStyles = {

@@ -105,7 +105,7 @@ const AboutSection = ({ onSectionChange }: AboutSectionProps) => {
   transition={{ delay: 0.3 }}
 >
 <span className="text-primary font-semibold">Software Engineer </span> 
-with an <span className="text-primary font-semibold">EEE background</span> 
+with an <span className="text-primary font-semibold">EEE background </span>  
 and hands-on experience in{' '}
 <span className="text-primary font-semibold">embedded systems</span>,{' '}
 <span className="text-primary font-semibold">IoT</span>, and{' '}

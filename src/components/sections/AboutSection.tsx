@@ -131,8 +131,8 @@ and hands-on experience in{' '}
             {/* Buttons */}
             <div className="pt-6 flex flex-wrap justify-center gap-4">
               <motion.a
-                href="Syed_Junaith_resume.pdf"
-                download="Syed_Junaith_resume.pdf"
+                href="Mohamed_Syed_Junaith_S_B_Resume.pdf"
+                download="Mohamed_Syed_Junaith_S_B_Resume.pdf"
                 className="px-6 py-3 rounded-lg bg-primary text-background font-bold border border-primary/50 glow-cyan hover:glow-cyan-intense transition-all"
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}

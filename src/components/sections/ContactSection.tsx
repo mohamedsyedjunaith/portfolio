@@ -51,62 +51,111 @@ const ContactSection = () => {
       if (i >= text.length) {
         clearInterval(interval);
         setIsTyping(false);
-        callback?.();
+        if (callback) {
+          callback();
+        }
       }
     }, 30);
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter' || isTyping) return;
-    const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (e.key !== 'Enter' || isTyping) return;
 
-    if (step === 'email' && inputValue.trim()) {
-    if (!isValidEmail(inputValue.trim())) {
-    typeWriter(' Invalid email format. Try again.');
-    setInputValue('');
-    return;
+  // ✅ FORCE SAFE VALUE
+  const trimmed = typeof inputValue === 'string' ? inputValue.trim() : '';
+
+  if (!trimmed) return;
+
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  // EMAIL STEP
+  if (step === 'email') {
+
+    if (!isValidEmail(trimmed)) {
+      typeWriter && typeWriter('Invalid email format. Try again.');
+      setInputValue('');
+      return;
     }
-      const emailInput = inputValue.trim();
-      setEmail(emailInput);
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: emailInput }]);
-      setInputValue('');
-      typeWriter('Email recorded.', () => setStep('message'));
-    } else if (step === 'message' && inputValue.trim()) {
-      const msgInput = inputValue.trim();
-      setMessage(msgInput);
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: msgInput }]);
-      setInputValue('');
-      typeWriter('Message recorded.', () => setStep('confirm'));
-    } else if (step === 'confirm' && inputValue.trim()) {
-      const answer = inputValue.trim().toLowerCase();
-      setTerminalLines((prev) => [...prev, { prefix: '~', cmd: inputValue }]);
-      setInputValue('');
 
-      if (answer === 'yes' || answer === 'y') {
-        typeWriter('Sending packet...', () => {
-          fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
+    setEmail(trimmed);
+
+    setTerminalLines(prev => [
+      ...(Array.isArray(prev) ? prev : []),
+      { prefix: '~', cmd: trimmed }
+    ]);
+
+    setInputValue('');
+
+    typeWriter && typeWriter('Email recorded.', () => setStep('message'));
+  }
+
+  // MESSAGE STEP
+  else if (step === 'message') {
+
+    setMessage(trimmed);
+
+    setTerminalLines(prev => [
+      ...(Array.isArray(prev) ? prev : []),
+      { prefix: '~', cmd: trimmed }
+    ]);
+
+    setInputValue('');
+
+    typeWriter && typeWriter('Message recorded.', () => setStep('confirm'));
+  }
+
+  // CONFIRM STEP
+  else if (step === 'confirm') {
+
+    const answer = trimmed.toLowerCase();
+
+    setTerminalLines(prev => [
+      ...(Array.isArray(prev) ? prev : []),
+      { prefix: '~', cmd: trimmed }
+    ]);
+
+    setInputValue('');
+
+    if (answer === 'yes' || answer === 'y') {
+
+      const currentEmail = email || '';
+      const currentMessage = message || '';
+
+      typeWriter && typeWriter('Sending packet...', async () => {
+        try {
+          await fetch('https://portfolio-self-tau-39.vercel.app/api/send-message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, message }),
+            body: JSON.stringify({
+              email: currentEmail,
+              message: currentMessage
+            }),
           });
-          typeWriter(
-            'Message sent successfully!\nResponse: Email sent successfully',
-            () => {
-              setStep('email');
-              setEmail('');
-              setMessage('');
-            }
-          );
-        });
-      } else {
-        typeWriter('Message discarded ✗', () => {
-          setStep('email');
-          setEmail('');
-          setMessage('');
-        });
-      }
+
+          typeWriter && typeWriter('Message sent successfully!', () => {
+            setStep('email');
+            setEmail('');
+            setMessage('');
+          });
+
+        } catch {
+          typeWriter && typeWriter('Error sending message.');
+        }
+      });
+
+    } else {
+
+      typeWriter && typeWriter('Message discarded ✗', () => {
+        setStep('email');
+        setEmail('');
+        setMessage('');
+      });
+
     }
-  };
+  }
+};
+  
   const getPrompt = () => {
     if (step === 'email') return 'Enter your email (You can type here...)';
     if (step === 'message') return 'Enter your message';
@@ -187,7 +236,7 @@ const ContactSection = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 50 }} // ⬅️ recommended
+          transition={{ delay: 0.2, duration: 50 }}
         >
           <p className="font-mono text-xs sm:text-sm text-muted-foreground mb-4">
             // NETWORK CONNECTIONS
